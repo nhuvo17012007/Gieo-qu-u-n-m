@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gieo Quẻ Bính Ngọ 2026 - Độc Bản</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Montserrat:wght@400;800&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #7f1d1d;
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            color: #fef3c7;
+        }
+
+        .main-canvas {
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(135deg, #991b1b 0%, #450a0a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Hiệu ứng mây trôi truyền thống */
+        .cloud {
+            position: absolute;
+            opacity: 0.2;
+            animation: cloudMove linear infinite;
+        }
+
+        @keyframes cloudMove {
+            from { transform: translateX(-150%); }
+            to { transform: translateX(150vw); }
+        }
+
+        /* Ống quẻ chuyển động */
+        .fortune-tube {
+            width: 120px;
+            height: 180px;
+            background: #b91c1c;
+            border: 4px solid #fbbf24;
+            border-radius: 10px 10px 50px 50px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .fortune-tube.shake {
+            animation: shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+
+        /* Thẻ quẻ */
+        .fortune-stick {
+            width: 15px;
+            height: 100px;
+            background: #fbbf24;
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            border: 1px solid #92400e;
+        }
+
+        /* Kết quả quẻ */
+        .result-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .lucky-card {
+            background: #fff;
+            color: #7f1d1d;
+            width: 320px;
+            padding: 40px 20px;
+            border-radius: 20px;
+            border: 8px double #fbbf24;
+            text-align: center;
+            position: relative;
+            transform: scale(0.8);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .lucky-card.show {
+            transform: scale(1);
+        }
+
+        .stamp {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border: 3px solid #7f1d1d;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.7rem;
+            transform: rotate(-15deg);
+            opacity: 0.5;
+        }
+
+        .btn-close {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #fbbf24;
+            color: #7f1d1d;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to bottom, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-canvas">
+        <!-- Trang trí -->
+        <div class="cloud" style="top: 10%; animation-duration: 20s;"><svg width="100" height="40" viewBox="0 0 100 40" fill="#fbbf24"><path d="M10,30 Q25,10 40,30 T70,30 T100,30" stroke="currentColor" fill="none" stroke-width="2"/></svg></div>
+        <div class="cloud" style="top: 20%; right: 0; animation-duration: 25s; animation-direction: reverse;"><svg width="120" height="50" viewBox="0 0 100 40" fill="#fbbf24"><path d="M0,20 Q20,0 40,20 T80,20 T120,20" stroke="currentColor" fill="none" stroke-width="2"/></svg></div>
+
+        <!-- Header -->
+        <div class="text-center mb-12 px-4 z-10">
+            <h2 class="text-2xl font-bold tracking-widest opacity-80 mb-2">XUÂN BÍNH NGỌ 2026</h2>
+            <h1 class="text-6xl md:text-8xl font-black gradient-text italic" style="font-family: 'Charm', cursive;">Gieo Quẻ Cầu May</h1>
+            <p class="mt-4 text-lg md:text-xl font-medium text-amber-200">Khai Xuân Rực Rỡ • Phi Mã Thành Công</p>
+        </div>
+
+        <!-- Ống quẻ -->
+        <div class="relative group" onclick="startGieo()">
+            <div id="tube" class="fortune-tube">
+                <div class="fortune-stick" style="transform: translateX(-10px) rotate(-5deg);"></div>
+                <div class="fortune-stick" style="transform: translateX(0px) rotate(0deg);"></div>
+                <div class="fortune-stick" style="transform: translateX(10px) rotate(5deg);"></div>
+                <div class="absolute inset-0 flex items-center justify-center font-bold text-4xl">🧧</div>
+            </div>
+            <div class="mt-8 text-center animate-bounce cursor-pointer">
+                <span class="bg-amber-400 text-red-900 px-6 py-2 rounded-full font-bold shadow-lg">CHẠM ĐỂ GIEO</span>
+            </div>
+        </div>
+
+        <!-- Footer Footer -->
+        <div class="absolute bottom-8 text-center w-full opacity-60 text-xs">
+            Vạn sự tùy duyên - Nhưng quẻ này là dành riêng cho bạn
+        </div>
+    </div>
+
+    <!-- Overlay kết quả -->
+    <div id="overlay" class="result-overlay">
+        <div id="card" class="lucky-card">
+            <h3 id="result-title" class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Quẻ Của Bạn</h3>
+            <div id="result-content" class="text-2xl md:text-3xl font-bold mb-6 px-4 leading-tight">
+                <!-- Nội dung quẻ sẽ hiện ở đây -->
+            </div>
+            <div class="h-px bg-gray-200 w-full mb-6"></div>
+            <p id="result-detail" class="text-gray-600 italic text-sm">
+                <!-- Chi tiết thú vị -->
+            </p>
+            <div class="stamp">BÍNH NGỌ<br>2026</div>
+            <button class="btn-close" onclick="closeOverlay()">NHẬN LỘC</button>
+        </div>
+    </div>
+
+    <script>
+        const fortunes = [
+            {
+                title: "QUẺ ĐẠI CÁT",
+                content: "Deadline chạy mất, Sếp gật đầu khen!",
+                detail: "Năm nay công việc hanh thông, lương tăng vèo vèo như ngựa phi nước đại."
+            },
+            {
+                title: "QUẺ TÌNH DUYÊN",
+                content: "Crush bật đèn xanh, nhanh tay kẻo lỡ!",
+                detail: "Tình duyên nở rộ, người cũ không phiền, người mới xuất hiện làm tim xao xuyến."
+            },
+            {
+                title: "QUẺ TÀI LỘC",
+                content: "Ví dày hơn bụng, tiền rủng rẻng rơi!",
+                detail: "Tài chính khởi sắc, đầu tư đâu thắng đó, tiền vào như nước sông Đà."
+            },
+            {
+                title: "QUẺ SỨC KHỎE",
+                content: "Ăn gì không béo, dẻo dai như ngựa chiến!",
+                detail: "Sức khỏe vô biên, tâm hồn tươi trẻ, cân nặng ổn định dù ăn Tết linh đình."
+            },
+            {
+                title: "QUẺ HỌC VẤN",
+                content: "Học một hiểu mười, thi đâu đỗ đó!",
+                detail: "Kiến thức đầy mình, bằng cấp cầm tay, con đường học thuật thênh thang rộng mở."
+            },
+            {
+                title: "QUẺ TÂM LINH",
+                content: "Vận xui tan biến, quý nhân kề bên!",
+                detail: "Mọi khó khăn chỉ là chuyện nhỏ, luôn có người giúp đỡ lúc cần thiết."
+            },
+            {
+                title: "QUẺ ĂN CHƠI",
+                content: "Đi chơi không mỏi, ảnh đẹp triệu like!",
+                detail: "Năm của những chuyến đi, khám phá những vùng đất mới, năng lượng tràn đầy."
+            }
+        ];
+
+        function startGieo() {
+            const tube = document.getElementById('tube');
+            tube.classList.add('shake');
+            
+            setTimeout(() => {
+                tube.classList.remove('shake');
+                showResult();
+            }, 1000);
+        }
+
+        function showResult() {
+            const overlay = document.getElementById('overlay');
+            const card = document.getElementById('card');
+            const resTitle = document.getElementById('result-title');
+            const resContent = document.getElementById('result-content');
+            const resDetail = document.getElementById('result-detail');
+
+            const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+            resTitle.innerText = randomFortune.title;
+            resContent.innerText = randomFortune.content;
+            resDetail.innerText = randomFortune.detail;
+
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                card.classList.add('show');
+            }, 10);
+        }
+
+        function closeOverlay() {
+            const overlay = document.getElementById('overlay');
+            const card = document.getElementById('card');
+            card.classList.remove('show');
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
