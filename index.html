@@ -3,269 +3,714 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gieo Quẻ Bính Ngọ 2026 - Độc Bản</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Montserrat:wght@400;800&family=Pacifico&display=swap" rel="stylesheet">
+    <title>Gieo Quẻ Đầu Xuân 2026 | Check VAR Vận Mệnh</title>
+    
+    <!-- Google Fonts: Pacifico (Tiêu đề) & Nunito (Nội dung) -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        body {
-            background-color: #7f1d1d;
-            margin: 0;
-            overflow: hidden;
-            font-family: 'Montserrat', sans-serif;
-            color: #fef3c7;
+        :root {
+            --tet-red: #D72638;
+            --tet-dark-red: #A01A28;
+            --tet-gold: #FFD700;
+            --tet-orange: #FF9F1C;
+            --tet-cream: #FFF8E7;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        .main-canvas {
-            height: 100vh;
-            width: 100vw;
-            background: linear-gradient(135deg, #991b1b 0%, #450a0a 100%);
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: radial-gradient(circle at center, var(--tet-red), var(--tet-dark-red));
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            color: var(--tet-cream);
+            overflow-x: hidden;
             position: relative;
         }
 
-        /* Hiệu ứng mây trôi truyền thống */
-        .cloud {
+        /* Background Pattern (Hoa mai, hoa đào nhẹ) */
+        body::before {
+            content: "🌸 🌼 🧧 🧨 🌸 🌼";
             position: absolute;
-            opacity: 0.2;
-            animation: cloudMove linear infinite;
+            top: 0; left: 0; right: 0; bottom: 0;
+            font-size: 2rem;
+            opacity: 0.05;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            z-index: -1;
+            pointer-events: none;
+            user-select: none;
         }
 
-        @keyframes cloudMove {
-            from { transform: translateX(-150%); }
-            to { transform: translateX(150vw); }
+        /* Container chính */
+        .container {
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            padding: 20px;
+            z-index: 10;
         }
 
-        /* Ống quẻ chuyển động */
-        .fortune-tube {
-            width: 120px;
-            height: 180px;
-            background: #b91c1c;
-            border: 4px solid #fbbf24;
-            border-radius: 10px 10px 50px 50px;
-            position: relative;
+        /* Header */
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: var(--tet-gold);
+            text-shadow: 2px 2px 0px #8b0000;
+            margin-bottom: 5px;
+            animation: textSparkle 2s infinite alternate;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--tet-gold);
+        }
+
+        /* Form nhập liệu */
+        .input-group {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .input-group input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+            text-align: center;
+            color: #333;
+        }
+
+        .input-group input:focus {
+            border-color: var(--tet-red);
+        }
+
+        button.btn-gieo {
+            background: linear-gradient(45deg, var(--tet-orange), var(--tet-red));
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(215, 38, 56, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
         }
 
-        .fortune-tube.shake {
-            animation: shake 0.5s ease-in-out infinite;
+        button.btn-gieo:active {
+            transform: scale(0.95);
         }
 
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(15deg); }
-            75% { transform: rotate(-15deg); }
+        button.btn-gieo:hover {
+            box-shadow: 0 6px 20px rgba(215, 38, 56, 0.6);
         }
 
-        /* Thẻ quẻ */
-        .fortune-stick {
-            width: 15px;
-            height: 100px;
-            background: #fbbf24;
+        /* 3D Card Flip Effect */
+        .scene {
+            width: 100%;
+            height: 480px; /* Chiều cao thẻ */
+            perspective: 1000px;
+            margin-top: 10px;
+            display: none; /* Ẩn mặc định cho đến khi bấm */
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Hiệu ứng nảy nhẹ */
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card__face {
             position: absolute;
-            top: -50px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 5px;
-            border: 1px solid #92400e;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 4px solid var(--tet-gold);
         }
 
-        /* Kết quả quẻ */
-        .result-overlay {
+        /* Mặt trước (Front) */
+        .card__face--front {
+            background: linear-gradient(135deg, #ff0000, #990000);
+            color: var(--tet-gold);
+        }
+
+        .front-decor {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: spinSlow 10s linear infinite;
+        }
+
+        .front-text {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+        }
+
+        /* Mặt sau (Back - Kết quả) */
+        .card__face--back {
+            background: #fff;
+            color: #333;
+            transform: rotateY(180deg);
+            padding: 20px;
+            justify-content: flex-start;
+            position: relative;
+        }
+
+        .card-header {
+            font-weight: 800;
+            color: var(--tet-red);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 2px dashed var(--tet-gold);
+            width: 100%;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+
+        .user-name-display {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .fortune-status {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--tet-dark-red);
+            margin: 10px 0;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .stats-container {
+            width: 100%;
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.95rem;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .stat-label { font-weight: 600; color: #555; }
+        .stat-value { font-weight: 800; color: var(--tet-orange); }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 2px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: var(--tet-red);
+            transition: width 1s ease-out;
+        }
+
+        .surprise-box {
+            background: var(--tet-cream);
+            border: 1px solid var(--tet-gold);
+            padding: 8px;
+            border-radius: 8px;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .surprise-title { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+        .surprise-content { font-weight: bold; color: #333; font-size: 0.95rem; }
+
+        .advice-quote {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: auto;
+            margin-bottom: 15px;
+            text-align: center;
+            border-left: 3px solid var(--tet-gold);
+            padding-left: 10px;
+        }
+
+        /* Nút Copy */
+        .btn-copy {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.3s;
+            width: 100%;
+            justify-content: center;
+            margin-top: auto;
+        }
+        
+        .btn-copy:hover {
+            background: var(--tet-red);
+        }
+
+        /* Toast Message */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 50px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: opacity 0.5s, bottom 0.5s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+
+        /* Canvas cho Confetti */
+        #confetti-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.85);
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        /* Animations */
+        @keyframes textSparkle {
+            from { text-shadow: 2px 2px 0px #8b0000; }
+            to { text-shadow: 2px 2px 10px #FFD700; }
+        }
+
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 400px) {
+            h1 { font-size: 2rem; }
+            .scene { height: 450px; }
+            .fortune-status { font-size: 1.1rem; }
+        }
+        
+        /* Ẩn input khi đã gieo xong (trên mobile cho gọn) */
+        .container.has-result .input-group {
             display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            backdrop-filter: blur(5px);
         }
-
-        .lucky-card {
-            background: #fff;
-            color: #7f1d1d;
-            width: 320px;
-            padding: 40px 20px;
+        .container.has-result .scene {
+            display: block;
+        }
+        
+        .reset-btn-container {
+            margin-top: 15px;
+            display: none;
+        }
+        .container.has-result .reset-btn-container {
+            display: block;
+        }
+        
+        .btn-reset {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 8px 16px;
             border-radius: 20px;
-            border: 8px double #fbbf24;
-            text-align: center;
-            position: relative;
-            transform: scale(0.8);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .lucky-card.show {
-            transform: scale(1);
-        }
-
-        .stamp {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border: 3px solid #7f1d1d;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.7rem;
-            transform: rotate(-15deg);
-            opacity: 0.5;
-        }
-
-        .btn-close {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #fbbf24;
-            color: #7f1d1d;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
             cursor: pointer;
+            font-size: 0.9rem;
         }
 
-        .gradient-text {
-            background: linear-gradient(to bottom, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
     </style>
 </head>
 <body>
 
-    <div class="main-canvas">
-        <!-- Trang trí -->
-        <div class="cloud" style="top: 10%; animation-duration: 20s;"><svg width="100" height="40" viewBox="0 0 100 40" fill="#fbbf24"><path d="M10,30 Q25,10 40,30 T70,30 T100,30" stroke="currentColor" fill="none" stroke-width="2"/></svg></div>
-        <div class="cloud" style="top: 20%; right: 0; animation-duration: 25s; animation-direction: reverse;"><svg width="120" height="50" viewBox="0 0 100 40" fill="#fbbf24"><path d="M0,20 Q20,0 40,20 T80,20 T120,20" stroke="currentColor" fill="none" stroke-width="2"/></svg></div>
+    <canvas id="confetti-canvas"></canvas>
 
-        <!-- Header -->
-        <div class="text-center mb-12 px-4 z-10">
-            <h2 class="text-2xl font-bold tracking-widest opacity-80 mb-2">XUÂN BÍNH NGỌ 2026</h2>
-            <h1 class="text-6xl md:text-8xl font-black gradient-text italic" style="font-family: 'Charm', cursive;">Gieo Quẻ Cầu May</h1>
-            <p class="mt-4 text-lg md:text-xl font-medium text-amber-200">Khai Xuân Rực Rỡ • Phi Mã Thành Công</p>
+    <div class="container" id="mainContainer">
+        <h1>🔮 Gieo Quẻ 2026 🔮</h1>
+        <div class="subtitle">Check VAR vận mệnh – Khai xuân đón lộc</div>
+
+        <div class="input-group" id="inputSection">
+            <input type="text" id="userName" placeholder="Nhập tên của bạn..." autocomplete="off">
+            <input type="number" id="birthYear" placeholder="Năm sinh (VD: 2000)" max="2026">
+            <button class="btn-gieo" onclick="castFortune()">🧧 Gieo Quẻ Ngay 🧧</button>
         </div>
 
-        <!-- Ống quẻ -->
-        <div class="relative group" onclick="startGieo()">
-            <div id="tube" class="fortune-tube">
-                <div class="fortune-stick" style="transform: translateX(-10px) rotate(-5deg);"></div>
-                <div class="fortune-stick" style="transform: translateX(0px) rotate(0deg);"></div>
-                <div class="fortune-stick" style="transform: translateX(10px) rotate(5deg);"></div>
-                <div class="absolute inset-0 flex items-center justify-center font-bold text-4xl">🧧</div>
-            </div>
-            <div class="mt-8 text-center animate-bounce cursor-pointer">
-                <span class="bg-amber-400 text-red-900 px-6 py-2 rounded-full font-bold shadow-lg">CHẠM ĐỂ GIEO</span>
+        <!-- 3D Card Scene -->
+        <div class="scene" id="cardScene">
+            <div class="card" id="card">
+                <!-- Mặt Trước -->
+                <div class="card__face card__face--front">
+                    <div class="front-decor">☯️</div>
+                    <div class="front-text">Bính Ngọ<br>2026</div>
+                    <div style="font-size: 0.8rem; margin-top: 10px; opacity: 0.8;">Chạm để lật xem</div>
+                </div>
+
+                <!-- Mặt Sau (Kết Quả) -->
+                <div class="card__face card__face--back" id="resultContent">
+                    <div class="card-header">QUẺ SỐ <span id="fortuneId">#01</span></div>
+                    <div class="user-name-display" id="displayUser">Tên: ... (2000)</div>
+                    
+                    <div class="fortune-status" id="txtStatus">
+                        Đang đọc tín hiệu vũ trụ...
+                    </div>
+
+                    <div class="stats-container">
+                        <div class="stat-row">
+                            <span class="stat-label">💼 Sự nghiệp:</span>
+                            <span class="stat-value" id="txtCareer">0%</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" id="barCareer" style="width: 0%"></div></div>
+                        
+                        <div style="height: 10px;"></div>
+
+                        <div class="stat-row">
+                            <span class="stat-label">💘 Tình cảm:</span>
+                            <span class="stat-value" id="txtLove">0%</span>
+                        </div>
+                        <div class="progress-bar"><div class="progress-fill" id="barLove" style="width: 0%"></div></div>
+                    </div>
+
+                    <div class="surprise-box">
+                        <div class="surprise-title">✨ Biến số bất ngờ ✨</div>
+                        <div class="surprise-content" id="txtSurprise">???</div>
+                    </div>
+
+                    <div class="advice-quote" id="txtAdvice">
+                        "..."
+                    </div>
+
+                    <button class="btn-copy" onclick="copyFortune()">
+                        📋 Copy Quẻ
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Footer Footer -->
-        <div class="absolute bottom-8 text-center w-full opacity-60 text-xs">
-            Vạn sự tùy duyên - Nhưng quẻ này là dành riêng cho bạn
+        <div class="reset-btn-container">
+            <button class="btn-reset" onclick="resetApp()">🔄 Gieo lại quẻ khác</button>
         </div>
     </div>
 
-    <!-- Overlay kết quả -->
-    <div id="overlay" class="result-overlay">
-        <div id="card" class="lucky-card">
-            <h3 id="result-title" class="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Quẻ Của Bạn</h3>
-            <div id="result-content" class="text-2xl md:text-3xl font-bold mb-6 px-4 leading-tight">
-                <!-- Nội dung quẻ sẽ hiện ở đây -->
-            </div>
-            <div class="h-px bg-gray-200 w-full mb-6"></div>
-            <p id="result-detail" class="text-gray-600 italic text-sm">
-                <!-- Chi tiết thú vị -->
-            </p>
-            <div class="stamp">BÍNH NGỌ<br>2026</div>
-            <button class="btn-close" onclick="closeOverlay()">NHẬN LỘC</button>
-        </div>
-    </div>
+    <!-- Toast Notification -->
+    <div id="toast">Đã copy! Share ngay để flex vận may đầu năm 😎✨</div>
 
     <script>
+        // --- 1. DỮ LIỆU QUẺ (Data) ---
         const fortunes = [
             {
-                title: "QUẺ ĐẠI CÁT",
-                content: "Deadline chạy mất, Sếp gật đầu khen!",
-                detail: "Năm nay công việc hanh thông, lương tăng vèo vèo như ngựa phi nước đại."
+                status: "Tâm bất biến giữa dòng đời vạn biến",
+                career: 85,
+                love: 40,
+                surprise: "Tìm thấy tờ 500k trong túi áo cũ",
+                advice: "Ngồi im tình yêu sẽ tới (hoặc không)."
             },
             {
-                title: "QUẺ TÌNH DUYÊN",
-                content: "Crush bật đèn xanh, nhanh tay kẻo lỡ!",
-                detail: "Tình duyên nở rộ, người cũ không phiền, người mới xuất hiện làm tim xao xuyến."
+                status: "Tiền vào như nước sông Đà",
+                career: 99,
+                love: 20,
+                surprise: "Sếp tăng lương hoặc... tăng việc",
+                advice: "Đừng làm việc chăm chỉ, hãy làm việc thông minh."
             },
             {
-                title: "QUẺ TÀI LỘC",
-                content: "Ví dày hơn bụng, tiền rủng rẻng rơi!",
-                detail: "Tài chính khởi sắc, đầu tư đâu thắng đó, tiền vào như nước sông Đà."
+                status: "Đào hoa nở rộ, coi chừng vỡ nợ tình",
+                career: 60,
+                love: 100,
+                surprise: "Người yêu cũ mời đi đám cưới",
+                advice: "Yêu thì yêu không yêu thì yêu."
             },
             {
-                title: "QUẺ SỨC KHỎE",
-                content: "Ăn gì không béo, dẻo dai như ngựa chiến!",
-                detail: "Sức khỏe vô biên, tâm hồn tươi trẻ, cân nặng ổn định dù ăn Tết linh đình."
+                status: "Nhân phẩm cực đại - Gacha là trúng",
+                career: 75,
+                love: 75,
+                surprise: "Trúng Give away trên Facebook",
+                advice: "Sống tốt trời xanh sẽ an bài."
             },
             {
-                title: "QUẺ HỌC VẤN",
-                content: "Học một hiểu mười, thi đâu đỗ đó!",
-                detail: "Kiến thức đầy mình, bằng cấp cầm tay, con đường học thuật thênh thang rộng mở."
+                status: "Deadline dí chạy tụt quần",
+                career: 95,
+                love: 5,
+                surprise: "Được khách hàng donate trà sữa",
+                advice: "Ngủ đủ 8 tiếng là một loại xa xỉ phẩm."
             },
             {
-                title: "QUẺ TÂM LINH",
-                content: "Vận xui tan biến, quý nhân kề bên!",
-                detail: "Mọi khó khăn chỉ là chuyện nhỏ, luôn có người giúp đỡ lúc cần thiết."
+                status: "Over hợp với việc đi du lịch",
+                career: 50,
+                love: 90,
+                surprise: "Book được vé máy bay 0 đồng",
+                advice: "Đi đâu cũng được, miễn là có tiền."
             },
             {
-                title: "QUẺ ĂN CHƠI",
-                content: "Đi chơi không mỏi, ảnh đẹp triệu like!",
-                detail: "Năm của những chuyến đi, khám phá những vùng đất mới, năng lượng tràn đầy."
+                status: "Trạng thái: Đang chờ tín hiệu vũ trụ",
+                career: 88,
+                love: 88,
+                surprise: "Crush chủ động rep story",
+                advice: "Kiên nhẫn là mẹ của thành công."
+            },
+            {
+                status: "Cẩn thận bị thao túng tâm lý",
+                career: 70,
+                love: 30,
+                surprise: "Phát hiện ra bí mật động trời của bạn thân",
+                advice: "Tin người vội vã là một cái tội."
+            },
+            {
+                status: "Năm nay Flex nhẹ, sang năm Flex to",
+                career: 92,
+                love: 60,
+                surprise: "Viral trên TikTok sau một đêm",
+                advice: "Khiêm tốn là đỉnh cao của sự khoe khoang."
+            },
+            {
+                status: "Độc lập tự do, ăn no ngủ kỹ",
+                career: 80,
+                love: 0,
+                surprise: "Giảm cân thành công (trong mơ)",
+                advice: "Ế là xu thế, không phải do không ai yêu."
             }
         ];
 
-        function startGieo() {
-            const tube = document.getElementById('tube');
-            tube.classList.add('shake');
+        // --- 2. LOGIC CHÍNH (Main Logic) ---
+        
+        let currentFortune = {}; // Lưu quẻ hiện tại để copy
+        const soundEffect = new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"); // Dummy short placeholder sound ref, will emulate logic
+
+        // Hàm giả lập âm thanh "Ting" bằng Web Audio API để không cần file ngoài
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTingSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
             
-            setTimeout(() => {
-                tube.classList.remove('shake');
-                showResult();
-            }, 1000);
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); // Tần số cao (Ting)
+            oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.5);
         }
 
-        function showResult() {
-            const overlay = document.getElementById('overlay');
-            const card = document.getElementById('card');
-            const resTitle = document.getElementById('result-title');
-            const resContent = document.getElementById('result-content');
-            const resDetail = document.getElementById('result-detail');
+        function castFortune() {
+            const name = document.getElementById('userName').value.trim();
+            const year = document.getElementById('birthYear').value;
 
-            const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            // Validate
+            if (!name || !year) {
+                alert("Bạn ơi, nhập tên và năm sinh để vũ trụ nhận diện nhé! 🥺");
+                return;
+            }
 
-            resTitle.innerText = randomFortune.title;
-            resContent.innerText = randomFortune.content;
-            resDetail.innerText = randomFortune.detail;
+            // UI Changes
+            document.getElementById('mainContainer').classList.add('has-result');
+            document.getElementById('displayUser').innerText = `Gia chủ: ${name} - Sinh năm: ${year}`;
 
-            overlay.style.display = 'flex';
+            // Random Logic
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            const data = fortunes[randomIndex];
+            currentFortune = { ...data, id: randomIndex + 1, name: name, year: year };
+
+            // Fill Data (nhưng chưa hiện ngay, đợi lật)
+            document.getElementById('fortuneId').innerText = `QUẺ SỐ #${randomIndex + 1}`;
+            document.getElementById('txtStatus').innerText = data.status;
+            document.getElementById('txtCareer').innerText = data.career + "%";
+            document.getElementById('barCareer').style.width = data.career + "%";
+            document.getElementById('txtLove').innerText = data.love + "%";
+            document.getElementById('barLove').style.width = data.love + "%";
+            document.getElementById('txtSurprise').innerText = data.surprise;
+            document.getElementById('txtAdvice').innerText = `"${data.advice}"`;
+
+            // Trigger Animation & Sound
+            playTingSound();
+            fireConfetti();
+
+            // Flip Card after short delay
             setTimeout(() => {
-                card.classList.add('show');
-            }, 10);
+                document.getElementById('card').classList.add('is-flipped');
+            }, 500);
         }
 
-        function closeOverlay() {
-            const overlay = document.getElementById('overlay');
-            const card = document.getElementById('card');
-            card.classList.remove('show');
-            setTimeout(() => {
-                overlay.style.display = 'none';
-            }, 300);
+        function copyFortune() {
+            if (!currentFortune.status) return;
+
+            const content = 
+`🔮 QUẺ ĐẦU NĂM 2026 🔮
+-----------------------
+👤 Gia chủ: ${currentFortune.name} (${currentFortune.year})
+✨ Status: ${currentFortune.status}
+💼 Sự nghiệp: ${currentFortune.career}%
+💘 Tình cảm: ${currentFortune.love}%
+🎁 Biến số: ${currentFortune.surprise}
+💡 Lời khuyên: "${currentFortune.advice}"
+-----------------------
+👉 Gieo quẻ tại: gieoque2026.vercel.app`; // Giả lập link
+
+            navigator.clipboard.writeText(content).then(() => {
+                showToast();
+            }).catch(err => {
+                // Fallback cho trình duyệt cũ
+                const textarea = document.createElement('textarea');
+                textarea.value = content;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast();
+            });
         }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        function resetApp() {
+            document.getElementById('card').classList.remove('is-flipped');
+            document.getElementById('mainContainer').classList.remove('has-result');
+            // Reset bars animation
+            document.getElementById('barCareer').style.width = "0%";
+            document.getElementById('barLove').style.width = "0%";
+            
+            // Clear inputs if wanted, or keep them
+            // document.getElementById('userName').value = ''; 
+        }
+
+        // Lật bài khi click vào thẻ (nếu chưa lật)
+        document.getElementById('card').addEventListener('click', function() {
+            // Nếu đã gieo (container có class has-result) mà thẻ chưa lật thì lật
+            if(document.getElementById('mainContainer').classList.contains('has-result') && !this.classList.contains('is-flipped')) {
+               this.classList.add('is-flipped');
+            }
+        });
+
+        // --- 3. HIỆU ỨNG PHÁO HOA (Simple Confetti Canvas) ---
+        function fireConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const pieces = [];
+            const numberOfPieces = 100;
+            const colors = ['#FFD700', '#D72638', '#FFF', '#FF9F1C'];
+
+            for (let i = 0; i < numberOfPieces; i++) {
+                pieces.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 10 + 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 3 + 2,
+                    rotation: Math.random() * 360
+                });
+            }
+
+            let animationId;
+            function update() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let activeCount = 0;
+
+                pieces.forEach(p => {
+                    p.y += p.speed;
+                    p.rotation += p.speed;
+                    
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    ctx.restore();
+
+                    if (p.y < canvas.height) activeCount++;
+                });
+
+                if (activeCount > 0) {
+                    animationId = requestAnimationFrame(update);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    cancelAnimationFrame(animationId);
+                }
+            }
+            update();
+        }
+        
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            document.getElementById('confetti-canvas').width = window.innerWidth;
+            document.getElementById('confetti-canvas').height = window.innerHeight;
+        });
+
     </script>
 </body>
 </html>
