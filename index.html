@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gieo Quẻ Đầu Xuân 2026 | Check VAR Vận Mệnh</title>
     
-    <!-- Google Fonts: Pacifico (Tiêu đề) & Nunito (Nội dung) -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Thư viện chụp ảnh màn hình -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
         :root {
@@ -38,7 +40,7 @@
             position: relative;
         }
 
-        /* Background Pattern (Hoa mai, hoa đào nhẹ) */
+        /* Background Pattern */
         body::before {
             content: "🌸 🌼 🧧 🧨 🌸 🌼";
             position: absolute;
@@ -137,17 +139,17 @@
         /* 3D Card Flip Effect */
         .scene {
             width: 100%;
-            height: 480px; /* Chiều cao thẻ */
+            height: 500px; /* Tăng chiều cao xíu để chứa nút */
             perspective: 1000px;
             margin-top: 10px;
-            display: none; /* Ẩn mặc định cho đến khi bấm */
+            display: none;
         }
 
         .card {
             width: 100%;
             height: 100%;
             position: relative;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Hiệu ứng nảy nhẹ */
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-style: preserve-3d;
             cursor: pointer;
         }
@@ -172,7 +174,6 @@
             border: 4px solid var(--tet-gold);
         }
 
-        /* Mặt trước (Front) */
         .card__face--front {
             background: linear-gradient(135deg, #ff0000, #990000);
             color: var(--tet-gold);
@@ -189,7 +190,7 @@
             font-size: 2rem;
         }
 
-        /* Mặt sau (Back - Kết quả) */
+        /* Mặt sau (Kết quả) */
         .card__face--back {
             background: #fff;
             color: #333;
@@ -197,6 +198,17 @@
             padding: 20px;
             justify-content: flex-start;
             position: relative;
+        }
+
+        /* Nội dung bên trong thẻ để chụp ảnh (không bao gồm nút) */
+        .card-content-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #fff; /* Đảm bảo nền trắng khi chụp */
+            padding: 5px;
+            border-radius: 15px;
         }
 
         .card-header {
@@ -275,34 +287,44 @@
             font-style: italic;
             font-size: 0.9rem;
             color: #555;
-            margin-top: auto;
+            margin-top: 10px;
             margin-bottom: 15px;
             text-align: center;
             border-left: 3px solid var(--tet-gold);
             padding-left: 10px;
         }
 
-        /* Nút Copy */
-        .btn-copy {
-            background: #333;
-            color: #fff;
+        /* Khu vực nút bấm */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .btn-action {
+            flex: 1;
             border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
+            padding: 10px;
+            border-radius: 10px;
             font-size: 0.9rem;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
-            transition: background 0.3s;
-            width: 100%;
             justify-content: center;
-            margin-top: auto;
+            gap: 5px;
+            transition: transform 0.2s, opacity 0.2s;
+            color: #fff;
         }
-        
-        .btn-copy:hover {
-            background: var(--tet-red);
-        }
+
+        .btn-action:active { transform: scale(0.95); }
+
+        .btn-copy { background: #333; }
+        .btn-copy:hover { background: #555; }
+
+        .btn-download { background: var(--tet-orange); }
+        .btn-download:hover { background: #e08e1a; }
 
         /* Toast Message */
         #toast {
@@ -330,15 +352,10 @@
             bottom: 50px;
         }
 
-        /* Canvas cho Confetti */
         #confetti-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 99;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 99;
         }
 
         /* Animations */
@@ -354,25 +371,15 @@
 
         @media (max-width: 400px) {
             h1 { font-size: 2rem; }
-            .scene { height: 450px; }
+            .scene { height: 480px; }
             .fortune-status { font-size: 1.1rem; }
+            .btn-action { font-size: 0.8rem; padding: 8px; }
         }
         
-        /* Ẩn input khi đã gieo xong (trên mobile cho gọn) */
-        .container.has-result .input-group {
-            display: none;
-        }
-        .container.has-result .scene {
-            display: block;
-        }
-        
-        .reset-btn-container {
-            margin-top: 15px;
-            display: none;
-        }
-        .container.has-result .reset-btn-container {
-            display: block;
-        }
+        .container.has-result .input-group { display: none; }
+        .container.has-result .scene { display: block; }
+        .reset-btn-container { margin-top: 15px; display: none; }
+        .container.has-result .reset-btn-container { display: block; }
         
         .btn-reset {
             background: transparent;
@@ -411,42 +418,52 @@
                 </div>
 
                 <!-- Mặt Sau (Kết Quả) -->
-                <div class="card__face card__face--back" id="resultContent">
-                    <div class="card-header">QUẺ SỐ <span id="fortuneId">#01</span></div>
-                    <div class="user-name-display" id="displayUser">Tên: ... (2000)</div>
-                    
-                    <div class="fortune-status" id="txtStatus">
-                        Đang đọc tín hiệu vũ trụ...
-                    </div>
-
-                    <div class="stats-container">
-                        <div class="stat-row">
-                            <span class="stat-label">💼 Sự nghiệp:</span>
-                            <span class="stat-value" id="txtCareer">0%</span>
-                        </div>
-                        <div class="progress-bar"><div class="progress-fill" id="barCareer" style="width: 0%"></div></div>
+                <div class="card__face card__face--back">
+                    <!-- Wrapper để chụp ảnh (loại trừ nút bấm ra) -->
+                    <div class="card-content-wrapper" id="captureArea">
+                        <div class="card-header">QUẺ SỐ <span id="fortuneId">#01</span></div>
+                        <div class="user-name-display" id="displayUser">Tên: ... (2000)</div>
                         
-                        <div style="height: 10px;"></div>
-
-                        <div class="stat-row">
-                            <span class="stat-label">💘 Tình cảm:</span>
-                            <span class="stat-value" id="txtLove">0%</span>
+                        <div class="fortune-status" id="txtStatus">
+                            Đang đọc tín hiệu vũ trụ...
                         </div>
-                        <div class="progress-bar"><div class="progress-fill" id="barLove" style="width: 0%"></div></div>
+
+                        <div class="stats-container">
+                            <div class="stat-row">
+                                <span class="stat-label">💼 Sự nghiệp:</span>
+                                <span class="stat-value" id="txtCareer">0%</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" id="barCareer" style="width: 0%"></div></div>
+                            
+                            <div style="height: 10px;"></div>
+
+                            <div class="stat-row">
+                                <span class="stat-label">💘 Tình cảm:</span>
+                                <span class="stat-value" id="txtLove">0%</span>
+                            </div>
+                            <div class="progress-bar"><div class="progress-fill" id="barLove" style="width: 0%"></div></div>
+                        </div>
+
+                        <div class="surprise-box">
+                            <div class="surprise-title">✨ Biến số bất ngờ ✨</div>
+                            <div class="surprise-content" id="txtSurprise">???</div>
+                        </div>
+
+                        <div class="advice-quote" id="txtAdvice">
+                            "..."
+                        </div>
+                        <div style="font-size: 0.7rem; color: #ccc; margin-top: 5px;">gieoque2026.vercel.app</div>
                     </div>
 
-                    <div class="surprise-box">
-                        <div class="surprise-title">✨ Biến số bất ngờ ✨</div>
-                        <div class="surprise-content" id="txtSurprise">???</div>
+                    <!-- Nút hành động -->
+                    <div class="action-buttons">
+                        <button class="btn-action btn-copy" onclick="copyFortune(event)">
+                            📋 Copy Text
+                        </button>
+                        <button class="btn-action btn-download" onclick="downloadFortune(event)">
+                            📸 Tải Ảnh
+                        </button>
                     </div>
-
-                    <div class="advice-quote" id="txtAdvice">
-                        "..."
-                    </div>
-
-                    <button class="btn-copy" onclick="copyFortune()">
-                        📋 Copy Quẻ
-                    </button>
                 </div>
             </div>
         </div>
@@ -456,177 +473,127 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast">Đã copy! Share ngay để flex vận may đầu năm 😎✨</div>
 
     <script>
-        // --- 1. DỮ LIỆU QUẺ (Data) ---
+        // --- DATA & LOGIC ---
         const fortunes = [
             {
                 status: "Tâm bất biến giữa dòng đời vạn biến",
-                career: 85,
-                love: 40,
-                surprise: "Tìm thấy tờ 500k trong túi áo cũ",
+                career: 85, love: 40, surprise: "Tìm thấy tờ 500k trong túi áo cũ",
                 advice: "Ngồi im tình yêu sẽ tới (hoặc không)."
             },
             {
                 status: "Tiền vào như nước sông Đà",
-                career: 99,
-                love: 20,
-                surprise: "Sếp tăng lương hoặc... tăng việc",
+                career: 99, love: 20, surprise: "Sếp tăng lương hoặc... tăng việc",
                 advice: "Đừng làm việc chăm chỉ, hãy làm việc thông minh."
             },
             {
                 status: "Đào hoa nở rộ, coi chừng vỡ nợ tình",
-                career: 60,
-                love: 100,
-                surprise: "Người yêu cũ mời đi đám cưới",
+                career: 60, love: 100, surprise: "Người yêu cũ mời đi đám cưới",
                 advice: "Yêu thì yêu không yêu thì yêu."
             },
             {
                 status: "Nhân phẩm cực đại - Gacha là trúng",
-                career: 75,
-                love: 75,
-                surprise: "Trúng Give away trên Facebook",
+                career: 75, love: 75, surprise: "Trúng Give away trên Facebook",
                 advice: "Sống tốt trời xanh sẽ an bài."
             },
             {
                 status: "Deadline dí chạy tụt quần",
-                career: 95,
-                love: 5,
-                surprise: "Được khách hàng donate trà sữa",
+                career: 95, love: 5, surprise: "Được khách hàng donate trà sữa",
                 advice: "Ngủ đủ 8 tiếng là một loại xa xỉ phẩm."
             },
             {
                 status: "Over hợp với việc đi du lịch",
-                career: 50,
-                love: 90,
-                surprise: "Book được vé máy bay 0 đồng",
+                career: 50, love: 90, surprise: "Book được vé máy bay 0 đồng",
                 advice: "Đi đâu cũng được, miễn là có tiền."
             },
             {
                 status: "Trạng thái: Đang chờ tín hiệu vũ trụ",
-                career: 88,
-                love: 88,
-                surprise: "Crush chủ động rep story",
+                career: 88, love: 88, surprise: "Crush chủ động rep story",
                 advice: "Kiên nhẫn là mẹ của thành công."
             },
             {
                 status: "Cẩn thận bị thao túng tâm lý",
-                career: 70,
-                love: 30,
-                surprise: "Phát hiện ra bí mật động trời của bạn thân",
+                career: 70, love: 30, surprise: "Phát hiện ra bí mật động trời của bạn thân",
                 advice: "Tin người vội vã là một cái tội."
             },
             {
                 status: "Năm nay Flex nhẹ, sang năm Flex to",
-                career: 92,
-                love: 60,
-                surprise: "Viral trên TikTok sau một đêm",
+                career: 92, love: 60, surprise: "Viral trên TikTok sau một đêm",
                 advice: "Khiêm tốn là đỉnh cao của sự khoe khoang."
             },
             {
                 status: "Độc lập tự do, ăn no ngủ kỹ",
-                career: 80,
-                love: 0,
-                surprise: "Giảm cân thành công (trong mơ)",
+                career: 80, love: 0, surprise: "Giảm cân thành công (trong mơ)",
                 advice: "Ế là xu thế, không phải do không ai yêu."
             },
-            // --- Dữ liệu MỚI cập nhật ---
             {
                 status: "Thần thái ngút ngàn, việc gì cũng xong",
-                career: 90,
-                love: 60,
-                surprise: "Sếp khen trước toàn công ty",
+                career: 90, love: 60, surprise: "Sếp khen trước toàn công ty",
                 advice: "Quan trọng là cái thần thái."
             },
             {
                 status: "Số hưởng, nằm không cũng có ăn",
-                career: 50,
-                love: 50,
-                surprise: "Được bao trà sữa cả tuần",
+                career: 50, love: 50, surprise: "Được bao trà sữa cả tuần",
                 advice: "Có làm mới có ăn (nhưng đôi khi không làm vẫn có)."
             },
             {
                 status: "Trưởng ban ngoại giao, ai cũng quý",
-                career: 85,
-                love: 95,
-                surprise: "Kết bạn được với idol",
+                career: 85, love: 95, surprise: "Kết bạn được với idol",
                 advice: "Thêm bạn bớt thù."
             },
             {
                 status: "Chiến thần chạy deadline",
-                career: 98,
-                love: 10,
-                surprise: "Hoàn thành KPI trước hạn",
+                career: 98, love: 10, surprise: "Hoàn thành KPI trước hạn",
                 advice: "Đừng để nước đến chân mới nhảy."
             },
             {
                 status: "Vận đào hoa ập đến cản không kịp",
-                career: 60,
-                love: 99,
-                surprise: "Ra ngõ gặp người yêu tương lai",
+                career: 60, love: 99, surprise: "Ra ngõ gặp người yêu tương lai",
                 advice: "Cưới vợ phải cưới liền tay."
             },
             {
                 status: "Đại gia ngầm, tiền đầy kho",
-                career: 88,
-                love: 40,
-                surprise: "Trúng số độc đắc (giấc mơ)",
+                career: 88, love: 40, surprise: "Trúng số độc đắc (giấc mơ)",
                 advice: "Đừng trông mặt mà bắt hình dong."
             },
             {
                 status: "Năm nay đi nhẹ nói khẽ cười duyên",
-                career: 70,
-                love: 70,
-                surprise: "Tránh được một kiếp nạn drama",
+                career: 70, love: 70, surprise: "Tránh được một kiếp nạn drama",
                 advice: "Một điều nhịn là chín điều lành."
             },
             {
                 status: "Master Chef tại gia",
-                career: 45,
-                love: 85,
-                surprise: "Nấu ăn ngon crush đổ đứ đừ",
+                career: 45, love: 85, surprise: "Nấu ăn ngon crush đổ đứ đừ",
                 advice: "Con đường ngắn nhất đến trái tim là qua dạ dày."
             },
             {
                 status: "CEO tương lai",
-                career: 95,
-                love: 20,
-                surprise: "Được đề bạt lên chức",
+                career: 95, love: 20, surprise: "Được đề bạt lên chức",
                 advice: "Mây tầng nào gặp mây tầng đó."
             },
             {
                 status: "Thánh chốt đơn",
-                career: 80,
-                love: 50,
-                surprise: "Săn sale 1k thành công",
+                career: 80, love: 50, surprise: "Săn sale 1k thành công",
                 advice: "Mua sắm là niềm vui, trả nợ là nỗi buồn."
             }
         ];
 
-        // --- 2. LOGIC CHÍNH (Main Logic) ---
-        
-        let currentFortune = {}; // Lưu quẻ hiện tại để copy
-        const soundEffect = new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU"); // Dummy short placeholder sound ref, will emulate logic
-
-        // Hàm giả lập âm thanh "Ting" bằng Web Audio API để không cần file ngoài
+        let currentFortune = {};
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
         function playTingSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
-            
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); // Tần số cao (Ting)
+            oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
             oscillator.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
-            
             gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
-            
             oscillator.start();
             oscillator.stop(audioCtx.currentTime + 0.5);
         }
@@ -634,23 +601,17 @@
         function castFortune() {
             const name = document.getElementById('userName').value.trim();
             const year = document.getElementById('birthYear').value;
-
-            // Validate
             if (!name || !year) {
                 alert("Bạn ơi, nhập tên và năm sinh để vũ trụ nhận diện nhé! 🥺");
                 return;
             }
-
-            // UI Changes
             document.getElementById('mainContainer').classList.add('has-result');
             document.getElementById('displayUser').innerText = `Gia chủ: ${name} - Sinh năm: ${year}`;
 
-            // Random Logic
             const randomIndex = Math.floor(Math.random() * fortunes.length);
             const data = fortunes[randomIndex];
             currentFortune = { ...data, id: randomIndex + 1, name: name, year: year };
 
-            // Fill Data (nhưng chưa hiện ngay, đợi lật)
             document.getElementById('fortuneId').innerText = `QUẺ SỐ #${randomIndex + 1}`;
             document.getElementById('txtStatus').innerText = data.status;
             document.getElementById('txtCareer').innerText = data.career + "%";
@@ -660,19 +621,17 @@
             document.getElementById('txtSurprise').innerText = data.surprise;
             document.getElementById('txtAdvice').innerText = `"${data.advice}"`;
 
-            // Trigger Animation & Sound
             playTingSound();
             fireConfetti();
 
-            // Flip Card after short delay
             setTimeout(() => {
                 document.getElementById('card').classList.add('is-flipped');
             }, 500);
         }
 
-        function copyFortune() {
+        function copyFortune(e) {
+            e.stopPropagation(); // Ngăn lật thẻ
             if (!currentFortune.status) return;
-
             const content = 
 `🔮 QUẺ ĐẦU NĂM 2026 🔮
 -----------------------
@@ -683,105 +642,96 @@
 🎁 Biến số: ${currentFortune.surprise}
 💡 Lời khuyên: "${currentFortune.advice}"
 -----------------------
-👉 Gieo quẻ tại: gieoque2026.vercel.app`; // Giả lập link
+👉 Gieo quẻ tại: gieoque2026.vercel.app`;
+            
+            navigator.clipboard.writeText(content).then(() => showToast("Đã copy text! Share ngay thôi 😎")).catch(() => showToast("Lỗi copy text rồi 😢"));
+        }
 
-            navigator.clipboard.writeText(content).then(() => {
-                showToast();
+        function downloadFortune(e) {
+            e.stopPropagation(); // Ngăn lật thẻ
+            const element = document.getElementById('captureArea');
+            const btn = e.target;
+            const originalText = btn.innerText;
+            btn.innerText = "⏳ Đang tạo ảnh...";
+            
+            // Cấu hình html2canvas
+            html2canvas(element, {
+                scale: 2, // Tăng độ phân giải cho nét
+                useCORS: true,
+                backgroundColor: "#ffffff",
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Que-Dau-Nam-${currentFortune.name || '2026'}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                
+                btn.innerText = originalText;
+                showToast("Đã tải ảnh! Post story ngay nào 📸");
             }).catch(err => {
-                // Fallback cho trình duyệt cũ
-                const textarea = document.createElement('textarea');
-                textarea.value = content;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast();
+                console.error(err);
+                btn.innerText = "Lỗi!";
+                showToast("Không tạo được ảnh, thử lại nhé!");
+                setTimeout(() => btn.innerText = originalText, 2000);
             });
         }
 
-        function showToast() {
+        function showToast(msg) {
             const toast = document.getElementById("toast");
+            toast.innerText = msg;
             toast.className = "show";
-            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
         }
 
         function resetApp() {
             document.getElementById('card').classList.remove('is-flipped');
             document.getElementById('mainContainer').classList.remove('has-result');
-            // Reset bars animation
             document.getElementById('barCareer').style.width = "0%";
             document.getElementById('barLove').style.width = "0%";
-            
-            // Clear inputs if wanted, or keep them
-            // document.getElementById('userName').value = ''; 
         }
 
-        // Lật bài khi click vào thẻ (nếu chưa lật)
         document.getElementById('card').addEventListener('click', function() {
-            // Nếu đã gieo (container có class has-result) mà thẻ chưa lật thì lật
             if(document.getElementById('mainContainer').classList.contains('has-result') && !this.classList.contains('is-flipped')) {
                this.classList.add('is-flipped');
             }
         });
 
-        // --- 3. HIỆU ỨNG PHÁO HOA (Simple Confetti Canvas) ---
+        // --- Confetti ---
         function fireConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-
             const pieces = [];
-            const numberOfPieces = 100;
             const colors = ['#FFD700', '#D72638', '#FFF', '#FF9F1C'];
-
-            for (let i = 0; i < numberOfPieces; i++) {
+            for (let i = 0; i < 100; i++) {
                 pieces.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height - canvas.height,
-                    w: Math.random() * 10 + 5,
-                    h: Math.random() * 10 + 5,
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height - canvas.height,
+                    w: Math.random() * 10 + 5, h: Math.random() * 10 + 5,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    speed: Math.random() * 3 + 2,
-                    rotation: Math.random() * 360
+                    speed: Math.random() * 3 + 2, rotation: Math.random() * 360
                 });
             }
-
             let animationId;
             function update() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 let activeCount = 0;
-
                 pieces.forEach(p => {
-                    p.y += p.speed;
-                    p.rotation += p.speed;
-                    
-                    ctx.save();
-                    ctx.translate(p.x, p.y);
-                    ctx.rotate(p.rotation * Math.PI / 180);
-                    ctx.fillStyle = p.color;
-                    ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                    p.y += p.speed; p.rotation += p.speed;
+                    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rotation * Math.PI / 180);
+                    ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
                     ctx.restore();
-
                     if (p.y < canvas.height) activeCount++;
                 });
-
-                if (activeCount > 0) {
-                    animationId = requestAnimationFrame(update);
-                } else {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    cancelAnimationFrame(animationId);
-                }
+                if (activeCount > 0) animationId = requestAnimationFrame(update);
+                else cancelAnimationFrame(animationId);
             }
             update();
         }
-        
-        // Resize canvas on window resize
         window.addEventListener('resize', () => {
-            document.getElementById('confetti-canvas').width = window.innerWidth;
-            document.getElementById('confetti-canvas').height = window.innerHeight;
+            const c = document.getElementById('confetti-canvas');
+            c.width = window.innerWidth; c.height = window.innerHeight;
         });
-
     </script>
 </body>
 </html>
